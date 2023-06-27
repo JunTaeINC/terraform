@@ -21,22 +21,24 @@ terraform {
 }
 
 provider "aws" {
-  region = "ap-northeast-2"
+  region = var.region
 }
 
-resource "aws_vpc" "example_vpc" {
+resource "aws_vpc" "vpc_1" {
   cidr_block = "10.0.0.0/16"
 
   tags = {
-    Name = "example-vpc"
+    Name = "${var.prefix}-vpc-1"
   }
 }
 
-resource "aws_subnet" "example_subnet" {
-  vpc_id     = aws_vpc.example_vpc.id
+resource "aws_subnet" "subnet_1" {
+  vpc_id     = aws_vpc.vpc_1.id
   cidr_block = "10.0.1.0/24"
+  // 서브넷이 속한 가용 영역를 설정
+  availability_zone = "${var.region}a"
 
   tags = {
-    Name = "example-subnet"
+    Name = "${var.prefix}-subnet-1"
   }
 }

@@ -153,4 +153,4 @@ terraform.rc
 # End of https://www.toptal.com/developers/gitignore/api/intellij,terraform
 
 # Custom
-.terraform.lock.hcl
+.terraform/.terraform.lock.hcl

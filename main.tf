@@ -33,12 +33,33 @@ resource "aws_vpc" "vpc_1" {
 }
 
 resource "aws_subnet" "subnet_1" {
-  vpc_id     = aws_vpc.vpc_1.id
-  cidr_block = "10.0.1.0/24"
+  vpc_id            = aws_vpc.vpc_1.id
+  cidr_block        = "10.0.1.0/24"
   // 서브넷이 속한 가용 영역를 설정
   availability_zone = "${var.region}a"
 
   tags = {
     Name = "${var.prefix}-subnet-1"
+  }
+}
+
+resource "aws_internet_gateway" "igw_1" {
+  vpc_id = aws_vpc.vpc_1.id
+
+  tags = {
+    Name = "${var.prefix}-igw-1"
+  }
+}
+
+resource "aws_route_table" "rt_1" {
+  vpc_id = aws_vpc.vpc_1.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.igw_1.id
+  }
+
+  tags = {
+    Name = "${var.prefix}-rt-1"
   }
 }
